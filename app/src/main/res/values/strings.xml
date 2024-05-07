@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">BorrowBee</string>
+    <string name="quote">What consumes your mind, controls your life</string>
+    <string name="home">Home</string>
+    <string name="browse">Browse</string>
+    <string name="favourites">Favourites</string>
+    <string name="cart">Cart</string>
+
+    <string name="rating">Rating</string>
+    <string name="pages">Pages</string>
+    <string name="language">Language</string>
+    <string name="audio">Audio</string>
+    <string name="read_book">Read Book</string>
+    <string name="listen_book">Listen Book</string>
+    <string name="best_sellers">Best Sellers</string>
+    <string name="my_books">My Books</string>
+    <string name="what_is_it_about">What is it about?</string>
+    <string name="who_is_it_for">Who is it for?</string>
+    <string name="about_book">Ashlyn Zanotti has big plans for the summer. She’s just spent a year at boarding school and can’t wait to get home. But when Ashlyn’s father is arrested for tax evasion and her mother enters a rehab facility for “exhaustion,” a.k.a. depression, her life is turned upside down.</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus neque et libero tempus efficitur. Cras quam leo, egestas eu elit sit amet, elementum ultricies.</string>
+    <string name="web_client_id">1096359249205-e73urm566kta71v0rq3an7j5sailshul.apps.googleusercontent.com</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+
+</resources>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1096359249205",
+    "project_id": "borrowbee-20532",
+    "storage_bucket": "borrowbee-20532.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096359249205:android:9d2b01dcf8fffd2160f87c",
+        "android_client_info": {
+          "package_name": "com.example.borrowbee"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGMz2C7ytkKO-opLZQJEirf8ZR0HM-77M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
