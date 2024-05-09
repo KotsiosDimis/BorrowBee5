@@ -7,6 +7,7 @@ plugins {
     //god help us ///
     id ("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
 
 }
 
@@ -58,6 +59,10 @@ android {
     ksp {
         arg("room.schemaLocation", "$projectDir/schemas")
     }
+    kapt {
+        correctErrorTypes = true
+    }
+
 }
 
 
@@ -93,7 +98,9 @@ dependencies {
 
     implementation ("androidx.room:room-runtime:$room_version")
     //Room
-    ksp("androidx.room:room-compiler:$room_version")
+    //noinspection KaptUsageInsteadOfKsp
+    kapt ("androidx.room:room-compiler:$room_version")
+   // ksp("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
 
 

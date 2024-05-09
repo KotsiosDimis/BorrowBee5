@@ -40,7 +40,6 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Normal
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.aiman.bookreadingcompose.utils.getComposeColor
 import com.example.borrowbee.R
 import com.example.borrowbee.data.models.BookModel
 import com.example.borrowbee.data.repos.BooksRepository
@@ -86,7 +85,7 @@ class BookDetailActivity : AppCompatActivity() {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = getComposeColor(book.backgroundColor)),
+                .background(color = MaterialTheme.colorScheme.onBackground,),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 

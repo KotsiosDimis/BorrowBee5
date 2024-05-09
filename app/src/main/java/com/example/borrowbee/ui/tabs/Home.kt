@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,48 +15,31 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.borrowbee.R
 import com.example.borrowbee.activities.BookDetailActivity
 import com.example.borrowbee.data.entities.BookEntity
-import com.example.borrowbee.data.models.BookModel
-import com.example.borrowbee.data.repos.BooksRepository.Companion.getBestSellers
+import com.example.borrowbee.main.MainApplication
+import com.example.borrowbee.main.MyViewModel
 import com.example.borrowbee.ui.components.Book.BookComponent
-import com.example.borrowbee.ui.components.Book.MyBookItem
 import com.example.borrowbee.ui.components.SearchBar.TopSearchBar
 import com.example.borrowbee.ui.theme.robotoCondenseFamily
 
 
 const val key_book = "key_book"
 const val key_is_bookmarked = "key_is_bookmarked"
+const val key_author = "key_author"
 
 @Composable
-fun HomeTab(context: Context) {
-
-    var backgroundColor by remember { mutableStateOf(Color.White) }
-
-    @Composable
-    fun changeBackgroundColor() {
-        backgroundColor = if (backgroundColor == Color.White) {
-            MaterialTheme.colorScheme.background // Use the background color from the Material U theme
-        } else {
-            Color.White
-        }
-    }
-
-
-
-    val bestSellerBooks = remember { getBestSellers() }
-
+fun HomeTab() {
 
     LazyColumn(
         modifier = Modifier
@@ -76,30 +58,17 @@ fun HomeTab(context: Context) {
                     .fillMaxWidth()
                     .padding(4.dp)
             ) {
-                MyBooks(context)
+                MyBooks()
             }
         }
 
         item {
-            Text(
-                context.getString(R.string.best_sellers),
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 28.sp,
-                fontFamily = robotoCondenseFamily,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(start = 8.dp),
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-
-        items(bestSellerBooks.windowed(2, 2, true)) { subList ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
             ) {
-                subList.forEach { book ->
-                    BookComponent(bookModel = book, context = context)
-                }
+                BestSellers()
             }
         }
 
@@ -111,14 +80,11 @@ fun HomeTab(context: Context) {
     }
 }
 
-
 @Composable
-fun MyBooks(context: Context) {
-    //val db = Firebase.firestore
-
+fun Heading(id : Int) {
     Spacer(modifier = Modifier.height(22.dp))
     Text(
-        context.getString(R.string.my_books),
+        text = stringResource(id = id),
         color = MaterialTheme.colorScheme.onBackground,
         fontSize = 28.sp,
         fontFamily = robotoCondenseFamily,
@@ -126,41 +92,70 @@ fun MyBooks(context: Context) {
         modifier = Modifier.padding(start = 4.dp),
     )
     Spacer(modifier = Modifier.height(12.dp))
-
-    //MyBooksList(bookList = BookRepository.getAllBooks(), context)
-
-   // MyBooksList3(bookList = getMyBooks(), context)
-
-
-}
-@Composable
-fun MyBooksList3(bookList: List<BookEntity>, context: Context) {
-    LazyRow {
-        items(bookList) { book ->
-            MyBookItem(bookEntity = book, context = context)
-        }
-    }
 }
 
 
 @Composable
-fun MyBooksList(bookList: ArrayList<BookModel>, context: Context) {
-    LazyRow {
-        items(bookList) { book ->
-            MyBookItem(bookModel = book, context = context)
-        }
+fun BestSellers() {
+
+    Heading(id = R.string.best_sellers)
+
+    val viewModel: MyViewModel = viewModel()
+
+    val roomBooks by viewModel.roomBooks.collectAsState()
+
+    LaunchedEffect(Unit) {
+        // Fetch books using the view model
+        viewModel.fetchBestSellers()
     }
+
+    val bestSellerBooks = roomBooks.toTypedArray()
+
+    MyBooksList(bookList =  bestSellerBooks)
 }
 
 
 
+@Composable
+fun MyBooks() {
 
+    Heading(id = R.string.my_books)
 
+    val bookDao = MainApplication.localDatabase.bookDao()
 
+    val viewModel: MyViewModel = viewModel()
 
-fun openBookDetailsActivity(context: Context, bookModel: BookModel, isBookmarked: Boolean = false) {
+    // Observe changes in the roomBooks list and update the local state accordingly
+    val roomBooks by viewModel.roomBooks.collectAsState()
+
+    // Trigger fetching books from the database when HomeTab composable is initially composed
+    LaunchedEffect(Unit) {
+        // Fetch books using the view model
+        viewModel.fetchBooks()
+    }
+
+    // Convert the list of BookModel to Array
+    val booksArray = roomBooks.toTypedArray()
+
+    // Pass the list of books to MyBooksList composable
+    MyBooksList(bookList = booksArray)
+
+}
+
+@Composable
+fun MyBooksList(bookList: Array<BookEntity>) {
+    LazyRow {
+        items(bookList) { book ->
+            BookComponent(bookEntity = book)
+        }
+    }
+}
+
+fun openBookDetailsActivity(context: Context, bookEntity: BookEntity, isBookmarked: Boolean = false) {
     val intent = Intent(context, BookDetailActivity::class.java).apply {
-        putExtra(key_book, bookModel)
+        putExtra(key_book, bookEntity.title)
+        putExtra(key_author, bookEntity.author)
+        // Add other properties of BookEntity as needed
         putExtra(key_is_bookmarked, isBookmarked)
     }
     context.startActivity(intent)

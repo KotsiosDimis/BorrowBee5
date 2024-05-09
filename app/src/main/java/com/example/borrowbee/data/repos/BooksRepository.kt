@@ -17,20 +17,6 @@ class BooksRepository {
 
 
 
-        fun getMyBooks(): ArrayList<BookModel> {
-            //return BookDao.getAllBooks()
-
-            return arrayListOf(
-                BookModel("No place like here", "Christina June", R.drawable.book_no_place_like_here, "#A66BA2", bookProgress = 10f),
-                BookModel("To Kill a Mockingbird", "Harper Lee", R.drawable.book_to_kill_a_mocking_bird, "#57503D",  bookProgress = 5f),
-                BookModel("The Book Thief", "Markus Zusak", R.drawable.book_the_book_thief, "#83631F",  bookProgress = 16f),
-
-            )
-        }
-
-
-
-
         fun getBestSellers(): ArrayList<BookModel> {
             return arrayListOf(
                 BookModel("To the moon", "Max Born", R.drawable.book_to_the_moon, "#36A0B5"),
