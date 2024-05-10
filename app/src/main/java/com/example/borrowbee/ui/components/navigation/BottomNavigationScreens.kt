@@ -1,4 +1,4 @@
-package com.example.borrowbee.ui.screens
+package com.example.borrowbee.ui.components.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -11,8 +11,8 @@ import com.example.borrowbee.R
 
 
 sealed class BottomNavigationScreens(val route: String, @StringRes val resourceId: Int, val icon: ImageVector) {
-    object Home : BottomNavigationScreens("Home", R.string.home, Icons.Filled.Home)
-    object Browse : BottomNavigationScreens("Browse", R.string.browse, Icons.Filled.Search)
-    object Favourites : BottomNavigationScreens("Bookmark", R.string.favourites, Icons.Filled.Bookmark)
-    object Cart : BottomNavigationScreens("Cart", R.string.cart, Icons.Filled.ShoppingCart)
+      data object Home : BottomNavigationScreens("Home", R.string.home, Icons.Filled.Home)
+      data object Browse : BottomNavigationScreens("Browse", R.string.browse, Icons.Filled.Search)
+      data object Favourites : BottomNavigationScreens("Bookmark", R.string.favourites, Icons.Filled.Bookmark)
+      data object Cart : BottomNavigationScreens("Cart", R.string.cart, Icons.Filled.ShoppingCart)
 }

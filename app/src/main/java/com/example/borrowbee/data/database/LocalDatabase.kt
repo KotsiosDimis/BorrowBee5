@@ -2,12 +2,14 @@ package com.example.borrowbee.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.example.borrowbee.data.daos.BookAvailabilityDao
 import com.example.borrowbee.data.daos.BookDao
-import com.example.borrowbee.data.daos.StoreBookDao
+import com.example.borrowbee.data.daos.BranchDao
+import com.example.borrowbee.data.entities.BookAvailabilityEntity
 import com.example.borrowbee.data.entities.BookEntity
-import com.example.borrowbee.data.entities.StoreBookEntity
+import com.example.borrowbee.data.entities.BranchEntity
 
-@Database(entities = [BookEntity::class, StoreBookEntity::class], version = 1)
+@Database(entities = [BookEntity::class, BookAvailabilityEntity::class, BranchEntity::class], version = 4)
 abstract class LocalDatabase : RoomDatabase() {
 
     companion object{
@@ -15,7 +17,9 @@ abstract class LocalDatabase : RoomDatabase() {
     }
 
     abstract fun bookDao(): BookDao
-    abstract fun storeBookDao(): StoreBookDao
+    abstract fun bookAvailabilityDao(): BookAvailabilityDao
+
+    abstract fun brunchDao(): BranchDao
 
 
 

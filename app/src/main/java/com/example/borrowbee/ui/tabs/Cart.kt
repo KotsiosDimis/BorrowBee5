@@ -9,11 +9,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.borrowbee.main.MyViewModel
+import com.example.borrowbee.ui.components.SearchBar.TopSearchBar
+
 
 @Composable
 fun CartTab() {
@@ -22,7 +27,6 @@ fun CartTab() {
             .fillMaxWidth()
             .fillMaxHeight()
             .background(MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier.padding(
@@ -31,28 +35,25 @@ fun CartTab() {
                 start = 12.dp,
                 end = 12.dp
             ),
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                "Insert Book",
-                color = MaterialTheme.colorScheme.onBackground,
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            // Input fields for book information
-            // You can replace these Text fields with appropriate input fields like TextField
-            Text("Title:")
-            Spacer(modifier = Modifier.height(4.dp))
-            Text("Author:")
-            Spacer(modifier = Modifier.height(4.dp))
-            Text("Genre:")
-            Spacer(modifier = Modifier.height(4.dp))
-            Text("Book Image:")
-            Spacer(modifier = Modifier.height(4.dp))
-            Text("Background Color:")
-            Spacer(modifier = Modifier.height(16.dp))
-            // Button to insert book
-            // You can replace this with a Button composable and add logic to insert the book
-            Text("Insert Book")
+            TopSearchBar()
+            Spacer(modifier = Modifier.height(12.dp))
+            val viewModel: MyViewModel = viewModel()
+
+            // Observe changes in the roomBooks list and update the local state accordingly
+            val roomBooks by viewModel.roomBooks.collectAsState()
+
+            // Trigger fetching books from the database when HomeTab composable is initially composed
+            LaunchedEffect(Unit) {
+                // Fetch books using the view model
+                viewModel.fetchBooks()
+            }
+
+            // Convert the list of BookModel to Array
+            val booksArray = roomBooks.toTypedArray()
+
+            // Pass the list of books to MyBooksList composable
+            MyBooksList(bookList = booksArray)
         }
     }
 }

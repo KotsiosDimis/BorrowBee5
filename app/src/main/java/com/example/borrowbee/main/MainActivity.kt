@@ -1,4 +1,4 @@
-package com.example.borrowbee.activities
+package com.example.borrowbee.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,8 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.borrowbee.data.daos.BookDao
-import com.example.borrowbee.ui.components.BottomNavigation.BottomNavigation
-import com.example.borrowbee.ui.screens.BottomNavigationScreens
+import com.example.borrowbee.ui.components.navigation.BottomNavigation
+import com.example.borrowbee.ui.components.navigation.BottomNavigationScreens
 import com.example.borrowbee.ui.tabs.BrowseTab
 import com.example.borrowbee.ui.tabs.CartTab
 import com.example.borrowbee.ui.tabs.FavouritesTab
@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         setContent {
             BorrowBeeTheme {
@@ -50,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 BrowseTab()
             }
             composable(BottomNavigationScreens.Favourites.route) {
-                FavouritesTab(this@MainActivity)
+                FavouritesTab()
             }
             composable(BottomNavigationScreens.Cart.route) {
                 CartTab()

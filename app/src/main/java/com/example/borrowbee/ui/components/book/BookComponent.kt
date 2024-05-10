@@ -1,4 +1,4 @@
-package com.example.borrowbee.ui.components.Book
+package com.example.borrowbee.ui.components.book
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -39,6 +39,7 @@ fun BookComponent(bookEntity: BookEntity) {
             .width(140.dp)
             .padding(8.dp)
             .clickable { openBookDetailsActivity(context, bookEntity) }
+
     ) {
         Image(
             painter = painterResource(id = bookEntity.bookImage),
@@ -47,7 +48,8 @@ fun BookComponent(bookEntity: BookEntity) {
                 .height(180.dp)
                 .width(140.dp)
                 .clip(RoundedCornerShape(16.dp)),
-            contentScale = ContentScale.FillHeight
+            contentScale = ContentScale.FillHeight,
+
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(

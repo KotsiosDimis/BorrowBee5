@@ -1,17 +1,24 @@
 package com.example.borrowbee.data.daos
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Upsert
 import com.example.borrowbee.data.entities.BookEntity
 
 @Dao
 interface BookDao {
-    @Upsert
-    fun insert(book: BookEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertBook(book: BookEntity)
 
-    @Upsert
-    fun insertAll(books: List<BookEntity>)
+    @Query("SELECT COUNT(*) FROM books WHERE title = :title AND author = :author")
+    suspend fun countBooksByTitleAndAuthor(title: String, author: String): Int
+
+    @Query("DELETE FROM books")
+    suspend fun deleteAllBooks()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertBooks(books: List<BookEntity>)
 
     @Query("SELECT * FROM books")
     fun getAllBooks(): List<BookEntity>
@@ -26,8 +33,7 @@ interface BookDao {
 
     // Add other CRUD operations here
     
-    @Query("SELECT * FROM books WHERE id = 1")
-    fun get1Book(): BookEntity
+
 
 
 

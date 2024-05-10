@@ -1,0 +1,38 @@
+[
+  {
+    "isbn13": 9780310766926,
+    "title": "No place like here",
+    "author": "Christina June",
+    "bookImage": "book_no_place_like_here",
+    "backgroundColor": "#A66BA2",
+    "bookProgress": 0,
+    "isBestseller": true
+  },
+  {
+    "isbn13": 9780812416800,
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "bookImage": "book_to_kill_a_mocking_bird",
+    "backgroundColor": "#57503D",
+    "bookProgress": 0,
+    "isBestseller": false
+  },
+  {
+    "isbn13": 9781784162122,
+    "title": "The Book Thief",
+    "author": "Markus Zusak",
+    "bookImage": "book_the_book_thief",
+    "backgroundColor": "#83631F",
+    "bookProgress": 0,
+    "isBestseller": true
+  },
+  {
+    "isbn13": 9781667878232,
+    "title": " Beyond Beyond Order or Maps of Meaning by Immersion",
+    "author": "Jordan B",
+    "bookImage": "book_boss_of_the_body",
+    "backgroundColor": "#83631F",
+    "bookProgress": 0,
+    "isBestseller": true
+  }
+]

@@ -5,6 +5,7 @@ package com.example.borrowbee.ui.components.SearchBar
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -31,22 +32,22 @@ fun TopSearchBar() {
     var active by remember { mutableStateOf( false)}
     var items = remember {
         mutableListOf(
-            "Bible",
-            "harry poter"
+            "Harry poter",
+
         )
     }
         Surface(
-            modifier = Modifier.fillMaxWidth(),  /// itan max size
+            //modifier = Modifier.fillMaxWidth(),  /// itan max size
             color = MaterialTheme.colorScheme.background
         ) {
             SearchBar(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(56.dp),
                 query = text,
                 onQueryChange = {
                     text = it
                 } ,
                 onSearch = {
-                    items.add(text)
+                    items.add(0,text)
                     active = false
                     text = ""
                 },

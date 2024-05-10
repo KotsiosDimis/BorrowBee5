@@ -1,4 +1,4 @@
-package com.example.borrowbee.activities
+package com.example.borrowbee.main
 
 import android.os.Bundle
 import android.view.WindowManager
@@ -41,27 +41,26 @@ import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.borrowbee.R
-import com.example.borrowbee.data.models.BookModel
-import com.example.borrowbee.data.repos.BooksRepository
+import com.example.borrowbee.apis.fetchBookDescription
+import com.example.borrowbee.data.entities.BookEntity
+import com.example.borrowbee.firebase.transactions.rentBook
 import com.example.borrowbee.ui.tabs.key_book
 import com.example.borrowbee.ui.tabs.key_is_bookmarked
-import com.example.borrowbee.ui.theme.BorrowBeeTheme
 import com.example.borrowbee.ui.theme.robotoCondenseFamily
 
 
 class BookDetailActivity : AppCompatActivity() {
 
-    lateinit var book: BookModel
+    lateinit var book: BookEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         book = intent.getParcelableExtra(key_book)!!
         changeStatusBarColor(book.backgroundColor)
 
         setContent {
-            BorrowBeeTheme {
+            MaterialTheme {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -113,7 +112,7 @@ class BookDetailActivity : AppCompatActivity() {
             Icon(
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = Color.White,
                 modifier = Modifier
                     .size(iconSize)
                     .padding(vertical = 8.dp, horizontal = 6.dp)
@@ -127,16 +126,16 @@ class BookDetailActivity : AppCompatActivity() {
                 else
                     painterResource(id = R.drawable.ic_bookmark),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = Color.White,
                 modifier = Modifier
                     .size(iconSize)
                     .padding(vertical = 8.dp, horizontal = 6.dp)
                     .clickable {
                         isBookmarked.value = !isBookmarked.value
-                        if(isBookmarked.value)
-                            BooksRepository.favourites.add(book)
-                        else
-                            BooksRepository.favourites.remove(book)
+                        //if (isBookmarked.value){}
+                        // TODO:
+                        //else // TODO:
+                        //BooksRepository.favourites.remove(book)
                     }
             )
         }
@@ -144,6 +143,21 @@ class BookDetailActivity : AppCompatActivity() {
 
     @Composable
     fun BookDetail() {
+
+        val isbn = book.isbn13
+
+        val (bookDescription, setBookDescription) = remember { mutableStateOf("Loading book description...") }
+
+        fetchBookDescription(isbn) { description ->
+            if (description != null) {
+                // Use the book description
+                setBookDescription("$description")
+            } else {
+                // Handle case where book not found or API request failed
+                setBookDescription("Book not found or API request failed")
+            }
+        }
+
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -160,7 +174,7 @@ class BookDetailActivity : AppCompatActivity() {
 
             Text(
                 text = book.title,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp,
                 fontFamily = robotoCondenseFamily
@@ -168,8 +182,8 @@ class BookDetailActivity : AppCompatActivity() {
 
             Text(
                 text = "By ${book.author}",
-                color = MaterialTheme.colorScheme.onBackground,
-                fontWeight = Normal,
+                color = Color.White,
+                fontWeight = FontWeight.Normal,
                 fontSize = 18.sp,
                 fontFamily = robotoCondenseFamily
             )
@@ -272,24 +286,22 @@ class BookDetailActivity : AppCompatActivity() {
         ) {
 
             ActionButton(
-                text = getString(R.string.read_book), modifier =
-                Modifier.background(
-                    shape = RoundedCornerShape(topStartPercent = 20, bottomStartPercent = 20),
-                    color = colorResource(id = R.color.action_button_background_color)
-                ),
-                R.drawable.ic_read_book
+                text = getString(R.string.rent_book), modifier =
+                Modifier
+                    .background(
+                        shape = RoundedCornerShape(topStartPercent = 20, bottomStartPercent = 20),
+                        color = colorResource(id = R.color.action_button_background_color)
+
+                    )
+                    .clickable(
+                        onClick = { rentBook(555555555555) }
+                    ),
+                R.drawable.ic_read_book,
+
             )
 
             Spacer(modifier = Modifier.width(4.dp))
 
-            ActionButton(
-                text = getString(R.string.listen_book), modifier =
-                Modifier.background(
-                    shape = RoundedCornerShape(topEndPercent = 20, bottomEndPercent = 20),
-                    color = colorResource(id = R.color.action_button_background_color)
-                ),
-                R.drawable.ic_listen_audio
-            )
         }
     }
 
@@ -324,6 +336,20 @@ class BookDetailActivity : AppCompatActivity() {
         val headingFontSize = 22.sp
         val contentFontSize = 18.sp
 
+        // Inside your composable function
+        val isbn = book.isbn13
+        val (bookDescription, setBookDescription) = remember { mutableStateOf("Loading book description...") }
+
+        fetchBookDescription(isbn) { description ->
+            if (description != null) {
+                // Use the book description
+                setBookDescription("Book Description: $description")
+            } else {
+                // Handle case where book not found or API request failed
+                setBookDescription("Book not found or API request failed")
+            }
+        }
+
         Box(
             modifier = Modifier
                 .wrapContentWidth()
@@ -342,7 +368,7 @@ class BookDetailActivity : AppCompatActivity() {
                     fontWeight = SemiBold,
                 )
                 Text(
-                    stringResource(id = R.string.about_book),
+                    text = bookDescription,
                     color = Color.White,
                     fontSize = contentFontSize,
                     fontFamily = robotoCondenseFamily,

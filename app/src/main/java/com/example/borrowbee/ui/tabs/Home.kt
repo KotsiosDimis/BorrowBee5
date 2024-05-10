@@ -19,18 +19,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.borrowbee.R
-import com.example.borrowbee.activities.BookDetailActivity
 import com.example.borrowbee.data.entities.BookEntity
+import com.example.borrowbee.main.BookDetailActivity
 import com.example.borrowbee.main.MainApplication
 import com.example.borrowbee.main.MyViewModel
-import com.example.borrowbee.ui.components.Book.BookComponent
-import com.example.borrowbee.ui.components.SearchBar.TopSearchBar
+import com.example.borrowbee.ui.components.book.BookComponent
 import com.example.borrowbee.ui.theme.robotoCondenseFamily
 
 
@@ -40,6 +40,16 @@ const val key_author = "key_author"
 
 @Composable
 fun HomeTab() {
+    val context = LocalContext.current
+
+    val viewModel: MyViewModel = viewModel()
+
+    LaunchedEffect(Unit) {
+        //viewModel.deleatAllBooks()
+        viewModel.insertAllBooks()
+
+    }
+
 
     LazyColumn(
         modifier = Modifier
@@ -47,10 +57,6 @@ fun HomeTab() {
             .fillMaxHeight()
             .background(MaterialTheme.colorScheme.background),
     ) {
-
-        item {
-            TopSearchBar()
-        }
 
         item {
             Column(
@@ -97,19 +103,18 @@ fun Heading(id : Int) {
 
 @Composable
 fun BestSellers() {
-
     Heading(id = R.string.best_sellers)
 
     val viewModel: MyViewModel = viewModel()
 
-    val roomBooks by viewModel.roomBooks.collectAsState()
+    val bestSellers by viewModel.roomBooks.collectAsState()
 
     LaunchedEffect(Unit) {
         // Fetch books using the view model
         viewModel.fetchBestSellers()
     }
 
-    val bestSellerBooks = roomBooks.toTypedArray()
+    val bestSellerBooks = bestSellers.toTypedArray()
 
     MyBooksList(bookList =  bestSellerBooks)
 }
@@ -126,7 +131,7 @@ fun MyBooks() {
     val viewModel: MyViewModel = viewModel()
 
     // Observe changes in the roomBooks list and update the local state accordingly
-    val roomBooks by viewModel.roomBooks.collectAsState()
+    val MyBooks by viewModel.roomBooks.collectAsState()
 
     // Trigger fetching books from the database when HomeTab composable is initially composed
     LaunchedEffect(Unit) {
@@ -135,7 +140,7 @@ fun MyBooks() {
     }
 
     // Convert the list of BookModel to Array
-    val booksArray = roomBooks.toTypedArray()
+    val booksArray = MyBooks.toTypedArray()
 
     // Pass the list of books to MyBooksList composable
     MyBooksList(bookList = booksArray)
@@ -153,9 +158,8 @@ fun MyBooksList(bookList: Array<BookEntity>) {
 
 fun openBookDetailsActivity(context: Context, bookEntity: BookEntity, isBookmarked: Boolean = false) {
     val intent = Intent(context, BookDetailActivity::class.java).apply {
-        putExtra(key_book, bookEntity.title)
-        putExtra(key_author, bookEntity.author)
-        // Add other properties of BookEntity as needed
+
+        putExtra(key_book, bookEntity)
         putExtra(key_is_bookmarked, isBookmarked)
     }
     context.startActivity(intent)
