@@ -30,7 +30,6 @@ import com.example.borrowbee.data.entities.BookEntity
 import com.example.borrowbee.main.MainApplication
 import com.example.borrowbee.main.MyViewModel
 import com.example.borrowbee.ui.components.Book.BookComponent
-import com.example.borrowbee.ui.components.SearchBar.TopSearchBar
 import com.example.borrowbee.ui.theme.robotoCondenseFamily
 
 
@@ -41,16 +40,21 @@ const val key_author = "key_author"
 @Composable
 fun HomeTab() {
 
+    val viewModel: MyViewModel = viewModel()
+
+    LaunchedEffect(Unit) {
+        //viewModel.deleatAllBooks()
+        viewModel.InsertAllBooks()
+
+    }
+
+
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
             .background(MaterialTheme.colorScheme.background),
     ) {
-
-        item {
-            TopSearchBar()
-        }
 
         item {
             Column(
@@ -153,9 +157,8 @@ fun MyBooksList(bookList: Array<BookEntity>) {
 
 fun openBookDetailsActivity(context: Context, bookEntity: BookEntity, isBookmarked: Boolean = false) {
     val intent = Intent(context, BookDetailActivity::class.java).apply {
-        putExtra(key_book, bookEntity.title)
-        putExtra(key_author, bookEntity.author)
-        // Add other properties of BookEntity as needed
+
+        putExtra(key_book, bookEntity)
         putExtra(key_is_bookmarked, isBookmarked)
     }
     context.startActivity(intent)

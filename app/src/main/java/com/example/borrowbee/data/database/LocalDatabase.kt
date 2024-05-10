@@ -7,7 +7,7 @@ import com.example.borrowbee.data.daos.StoreBookDao
 import com.example.borrowbee.data.entities.BookEntity
 import com.example.borrowbee.data.entities.StoreBookEntity
 
-@Database(entities = [BookEntity::class, StoreBookEntity::class], version = 1)
+@Database(entities = [BookEntity::class, StoreBookEntity::class], version = 2)
 abstract class LocalDatabase : RoomDatabase() {
 
     companion object{

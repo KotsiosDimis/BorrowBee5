@@ -1,0 +1,26 @@
+[
+  {
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "bookImage": "book_mockingbird",
+    "backgroundColor": "#FFD700",
+    "bookProgress": 0.8,
+    "isBestseller": true
+  },
+  {
+    "title": "1984",
+    "author": "George Orwell",
+    "bookImage": "book_1984",
+    "backgroundColor": "#008000",
+    "bookProgress": 0.5,
+    "isBestseller": false
+  },
+  {
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "bookImage": "book_gatsby",
+    "backgroundColor": "#0000FF",
+    "bookProgress": 0.6,
+    "isBestseller": true
+  }
+]
