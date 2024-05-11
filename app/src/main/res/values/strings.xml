@@ -25,6 +25,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="rent_book">"Rent "</string>
+    <string name="DevTab">DevTab</string>
 
 
 </resources>

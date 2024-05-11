@@ -1,4 +1,4 @@
-package com.example.borrowbee.ui.components.book
+package com.example.borrowbee.ui.components.bookComponent
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

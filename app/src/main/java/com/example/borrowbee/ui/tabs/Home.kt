@@ -1,7 +1,5 @@
 package com.example.borrowbee.ui.tabs
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,17 +22,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.borrowbee.R
-import com.example.borrowbee.data.entities.BookEntity
-import com.example.borrowbee.main.BookDetailActivity
 import com.example.borrowbee.main.MainApplication
 import com.example.borrowbee.main.MyViewModel
-import com.example.borrowbee.ui.components.book.BookComponent
 import com.example.borrowbee.ui.theme.robotoCondenseFamily
 
 
 const val key_book = "key_book"
 const val key_is_bookmarked = "key_is_bookmarked"
 const val key_author = "key_author"
+
+const val key_book2 = "key_book2"
 
 @Composable
 fun HomeTab() {
@@ -45,9 +40,8 @@ fun HomeTab() {
     val viewModel: MyViewModel = viewModel()
 
     LaunchedEffect(Unit) {
-        //viewModel.deleatAllBooks()
+        viewModel.deleatAllBooks()
         viewModel.insertAllBooks()
-
     }
 
 
@@ -116,7 +110,7 @@ fun BestSellers() {
 
     val bestSellerBooks = bestSellers.toTypedArray()
 
-    MyBooksList(bookList =  bestSellerBooks)
+    BooksList(bookList =  bestSellerBooks)
 }
 
 
@@ -137,30 +131,17 @@ fun MyBooks() {
     LaunchedEffect(Unit) {
         // Fetch books using the view model
         viewModel.fetchBooks()
+        viewModel.insertBookFromIsbn("9780062882776")
     }
 
     // Convert the list of BookModel to Array
     val booksArray = MyBooks.toTypedArray()
 
     // Pass the list of books to MyBooksList composable
-    MyBooksList(bookList = booksArray)
+    BooksList(bookList = booksArray)
 
 }
 
-@Composable
-fun MyBooksList(bookList: Array<BookEntity>) {
-    LazyRow {
-        items(bookList) { book ->
-            BookComponent(bookEntity = book)
-        }
-    }
-}
 
-fun openBookDetailsActivity(context: Context, bookEntity: BookEntity, isBookmarked: Boolean = false) {
-    val intent = Intent(context, BookDetailActivity::class.java).apply {
 
-        putExtra(key_book, bookEntity)
-        putExtra(key_is_bookmarked, isBookmarked)
-    }
-    context.startActivity(intent)
-}
+

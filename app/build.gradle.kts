@@ -69,7 +69,9 @@ android {
 
 dependencies {
 
+    implementation ("io.coil-kt:coil-compose:2.6.0")
 
+    //implementation ("io.coil- Coil:coil-compose:2.2.2")
 
     implementation ("com.google.android.material:material:1.12.0")
 

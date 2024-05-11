@@ -37,7 +37,7 @@ fun TopSearchBar() {
         )
     }
         Surface(
-            //modifier = Modifier.fillMaxWidth(),  /// itan max size
+            modifier = Modifier.fillMaxWidth(),  /// itan max size
             color = MaterialTheme.colorScheme.background
         ) {
             SearchBar(

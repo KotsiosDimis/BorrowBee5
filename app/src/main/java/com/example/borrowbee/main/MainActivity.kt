@@ -16,6 +16,7 @@ import com.example.borrowbee.ui.components.navigation.BottomNavigation
 import com.example.borrowbee.ui.components.navigation.BottomNavigationScreens
 import com.example.borrowbee.ui.tabs.BrowseTab
 import com.example.borrowbee.ui.tabs.CartTab
+import com.example.borrowbee.ui.tabs.DevTab
 import com.example.borrowbee.ui.tabs.FavouritesTab
 import com.example.borrowbee.ui.tabs.HomeTab
 import com.example.borrowbee.ui.theme.BorrowBeeTheme
@@ -29,9 +30,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         setContent {
             BorrowBeeTheme {
                 MainScreen()
+
+
             }
         }
     }
@@ -54,6 +58,9 @@ class MainActivity : AppCompatActivity() {
             composable(BottomNavigationScreens.Cart.route) {
                 CartTab()
             }
+            composable(BottomNavigationScreens.DevTab.route) {
+                DevTab()
+            }
         }
     }
 
@@ -67,6 +74,7 @@ class MainActivity : AppCompatActivity() {
             BottomNavigationScreens.Browse,
             BottomNavigationScreens.Favourites,
             BottomNavigationScreens.Cart,
+            BottomNavigationScreens.DevTab,
         )
 
         Scaffold(
@@ -77,7 +85,5 @@ class MainActivity : AppCompatActivity() {
             MainScreenNavigationConfigurations(navController)
         }
     }
-
-
 
 }

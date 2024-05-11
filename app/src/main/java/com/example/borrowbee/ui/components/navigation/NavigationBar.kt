@@ -41,7 +41,7 @@ fun BottomNavigation(
                 label = {
                     Text(
                         stringResource(id = screen.resourceId),
-                        fontSize = 14.sp,
+                        fontSize = 12.sp,
                         modifier = Modifier.padding(top = 4.dp)
                         )
                         },

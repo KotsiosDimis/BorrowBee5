@@ -41,19 +41,19 @@ fun CartTab() {
             val viewModel: MyViewModel = viewModel()
 
             // Observe changes in the roomBooks list and update the local state accordingly
-            val roomBooks by viewModel.roomBooks.collectAsState()
+            val roomBooks2 by viewModel.roomBooks2.collectAsState()
 
             // Trigger fetching books from the database when HomeTab composable is initially composed
             LaunchedEffect(Unit) {
                 // Fetch books using the view model
-                viewModel.fetchBooks()
+                viewModel.fetchBooks2()
             }
 
             // Convert the list of BookModel to Array
-            val booksArray = roomBooks.toTypedArray()
+            val booksArray = roomBooks2.toTypedArray()
 
-            // Pass the list of books to MyBooksList composable
-            MyBooksList(bookList = booksArray)
+            // Pass the list of books to BooksColumn composable
+            BooksColumn2(bookList = booksArray)
         }
     }
 }
