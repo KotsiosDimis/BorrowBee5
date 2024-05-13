@@ -9,6 +9,7 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-kapt")
 
+
 }
 
 android {
@@ -143,13 +144,17 @@ dependencies {
 
 
     ///Fierbace
-    implementation ("com.google.firebase:firebase-core:21.1.1")
-    implementation ("com.google.firebase:firebase-database:21.0.0")
+    //implementation ("com.google.firebase:firebase-core:21.1.1")
+    //implementation ("com.google.firebase:firebase-database:21.0.0")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    //implementation ("com.google.firebase:platform-bom:33.0.3")
+    //implementation ("com.google.firebase:firebase-database:23.2.0")
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+
+    //implementation("io.coil-kt:coil-compose:2.4.0")
 
     //implementation("com.google.android.gms:play-services-credentials:21.1.1")
 

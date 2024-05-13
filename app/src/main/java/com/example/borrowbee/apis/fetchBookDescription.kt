@@ -1,5 +1,6 @@
 package com.example.borrowbee.apis
 
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -10,6 +11,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 // Function to fetch book description by ISBN
+@OptIn(DelicateCoroutinesApi::class)
 fun fetchBookDescription(isbn: Long, callback: (String?) -> Unit) {
     val apiUrl = "https://www.googleapis.com/books/v1/volumes?q=isbn:$isbn"
 

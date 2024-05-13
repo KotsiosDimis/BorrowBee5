@@ -1,44 +1,30 @@
 package com.example.borrowbee.data.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.borrowbee.data.entities.BookEntity
+import androidx.room.Update
+import com.example.borrowbee.data.entities.Book
 
 @Dao
 interface BookDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBook(book: BookEntity)
-
-    @Query("SELECT COUNT(*) FROM books WHERE title = :title AND author = :author")
-    suspend fun countBooksByTitleAndAuthor(title: String, author: String): Int
-
-    @Query("DELETE FROM books")
-    suspend fun deleteAllBooks()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBooks(books: List<BookEntity>)
+    suspend fun insertBook(book: Book): Long
 
-    @Query("SELECT * FROM books")
-    fun getAllBooks(): List<BookEntity>
+    @Update
+    suspend fun updateBook(book: Book)
 
+    @Delete
+    suspend fun deleteBook(book: Book)
 
-    @Query("SELECT * FROM books WHERE isBestseller = 1")
-     fun getBestSellers(): List<BookEntity>
+    @Query("SELECT * FROM book")
+    suspend fun getAllBooks(): List<Book>
 
+    @Query("SELECT * FROM book WHERE isbn13 = :isbn13")
+    suspend fun getBookByIsbn13(isbn13: Int): Book?  // Use nullable return type as book may not exist
 
-    @Query("SELECT * FROM books")
-    fun getAllBooksAsArray(): Array<BookEntity> // Update return type to List<BookEntity>
-
-    // Add other CRUD operations here
-    
-
-
-
-
-
-
+    // Add additional queries as needed, e.g., by title, author etc.
 }
-
-

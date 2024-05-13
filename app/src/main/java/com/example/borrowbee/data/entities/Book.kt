@@ -1,13 +1,15 @@
 package com.example.borrowbee.data.entities
 
+
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
+
 @Parcelize
 @Entity(tableName = "book")
-data class Book(
+data class  Book (
     @PrimaryKey(autoGenerate = false)
     val isbn13: String,
     val title: String,

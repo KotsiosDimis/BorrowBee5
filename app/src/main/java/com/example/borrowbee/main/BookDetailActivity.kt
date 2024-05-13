@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -41,10 +41,12 @@ import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.example.borrowbee.R
 import com.example.borrowbee.apis.fetchBookDescription
-import com.example.borrowbee.data.entities.BookEntity
+import com.example.borrowbee.data.entities.Book
 import com.example.borrowbee.firebase.transactions.rentBook
+import com.example.borrowbee.ui.tabs.fixUrl
 import com.example.borrowbee.ui.tabs.key_book
 import com.example.borrowbee.ui.tabs.key_is_bookmarked
 import com.example.borrowbee.ui.theme.robotoCondenseFamily
@@ -52,13 +54,13 @@ import com.example.borrowbee.ui.theme.robotoCondenseFamily
 
 class BookDetailActivity : AppCompatActivity() {
 
-    lateinit var book: BookEntity
+    lateinit var book: Book
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         book = intent.getParcelableExtra(key_book)!!
-        changeStatusBarColor(book.backgroundColor)
+        changeStatusBarColor("#FF0000")
 
         setContent {
             MaterialTheme {
@@ -75,7 +77,7 @@ class BookDetailActivity : AppCompatActivity() {
     }
 
     private fun changeStatusBarColor(color: String) {
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = android.graphics.Color.parseColor(color)
     }
@@ -118,7 +120,7 @@ class BookDetailActivity : AppCompatActivity() {
                 modifier = Modifier
                     .size(iconSize)
                     .padding(vertical = 8.dp, horizontal = 6.dp)
-                    .clickable { onBackPressed() }
+                    .clickable { onBackPressedDispatcher.onBackPressed() }
             )
 
             Icon(
@@ -152,7 +154,7 @@ class BookDetailActivity : AppCompatActivity() {
 
         val (bookDescription, setBookDescription) = remember { mutableStateOf("Loading book description...") }
 
-        fetchBookDescription(isbn) { description ->
+        fetchBookDescription(isbn.toLong()) { description ->
             if (description != null) {
                 // Use the book description
                 setBookDescription("$description")
@@ -166,13 +168,19 @@ class BookDetailActivity : AppCompatActivity() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = book.bookImage),
-                contentDescription = null,
+            AsyncImage(
+
+                model = fixUrl(book.imageUrl), // fixUrls fixes http to https
+                placeholder = painterResource(id = R.drawable.book_boss_of_the_body),
+                error = painterResource(id = R.drawable.book_eat_better),
+                contentDescription = book.title,
                 modifier = Modifier
                     .height(280.dp)
-                    .clip(RoundedCornerShape(12.dp))
-            )
+                    .width(140.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.FillHeight,
+
+                )
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -297,11 +305,16 @@ class BookDetailActivity : AppCompatActivity() {
                         color = colorResource(id = R.color.action_button_background_color)
 
                     )
-                    .clickable(
-                        onClick = { rentBook(555555555555) }
+                    .clickable( onClick = { rentBook(
+                        book.isbn13,
+                        "TODAY",
+                        "10 days later",
+                        "Rent ",
+                        "1"
+                    ) }
+
                     ),
                 R.drawable.ic_read_book,
-
             )
 
             Spacer(modifier = Modifier.width(4.dp))
@@ -318,7 +331,13 @@ class BookDetailActivity : AppCompatActivity() {
             modifier = modifier
                 .height(buttonHeight)
                 .width(buttonWidth)
-                .clickable {},
+                .clickable {rentBook(
+                    book.isbn13,
+                    "TODAY222222",
+                    "10 days later",
+                    "Rent ",
+                    "1"
+                )},
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -344,7 +363,7 @@ class BookDetailActivity : AppCompatActivity() {
         val isbn = book.isbn13
         val (bookDescription, setBookDescription) = remember { mutableStateOf("Loading book description...") }
 
-        fetchBookDescription(isbn) { description ->
+        fetchBookDescription(isbn.toLong()) { description ->
             if (description != null) {
                 // Use the book description
                 setBookDescription("Book Description: $description")
@@ -379,20 +398,7 @@ class BookDetailActivity : AppCompatActivity() {
                     fontWeight = Normal,
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    getString(R.string.who_is_it_for),
-                    color = Color.White,
-                    fontSize = headingFontSize,
-                    fontFamily = robotoCondenseFamily,
-                    fontWeight = SemiBold,
-                )
-                Text(
-                    stringResource(id = R.string.lorem_ipsum),
-                    color = Color.White,
-                    fontSize = contentFontSize,
-                    fontFamily = robotoCondenseFamily,
-                    fontWeight = Normal,
-                )
+
             }
         }
 

@@ -29,11 +29,6 @@
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
         </activity>
-        <activity
-            android:name=".main.BookDetailActivity2"
-            android:exported="true"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
-        </activity>
 
     </application>
 

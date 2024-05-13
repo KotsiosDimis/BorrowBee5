@@ -35,15 +35,7 @@ suspend fun fetchBookDetails(isbn13: String): Book? {
                     val publicationDate = volumeInfo.optString("publishedDate", "")
                     val imageUrl = volumeInfo.optJSONObject("imageLinks")?.optString("thumbnail", null)
 
-                    Book(
-                        isbn13 = isbn13,
-                        title = title,
-                        author = author,
-                        publisher = publisher,
-                        publicationDate = publicationDate,
-                        imageUrl = imageUrl
-                    )
-
+                    Book(isbn13 = isbn13, title = title, author = author, publisher = publisher, publicationDate = publicationDate, imageUrl = imageUrl)
 
                 } else {
                     null

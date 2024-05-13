@@ -55,7 +55,7 @@ fun BrowseTab() {
             val booksArray = roomBooks.toTypedArray()
 
             // Pass the list of books to BooksColumn composable
-            BooksColumn(bookList = booksArray)
+            //BooksColumn(bookList = booksArray)
         }
     }
 }
